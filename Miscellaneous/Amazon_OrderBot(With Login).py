@@ -44,8 +44,8 @@ def checkout():
     place_order.click()
 
 
-username = "gauravdharmadhikari2@gmail.com"
-password = "pokemongames101"
+username = "Whatever your username is"
+password = "Whatever you password is"
 
 login(username, password)
 addToCart()
