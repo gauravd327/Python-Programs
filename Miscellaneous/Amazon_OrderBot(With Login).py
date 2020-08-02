@@ -45,7 +45,7 @@ def checkout():
 
 
 username = "Whatever your username is"
-password = "Whatever you password is"
+password = "Whatever your password is"
 
 login(username, password)
 addToCart()
