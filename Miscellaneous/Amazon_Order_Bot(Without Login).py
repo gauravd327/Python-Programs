@@ -53,8 +53,8 @@ def checkout():
     deliver.click()
 
 
-username = "gauravdharmadhikari2@gmail.com"
-password = "pokemongames101"
+username = "Whatever your username is"
+password = "Whatever your password is"
 
 login(username, password)
 
