@@ -29,21 +29,21 @@ gameboard = [[-2, -3, -4, -6, -5, -4, -3, -2],
              [ 2,  3,  4,  6,  5,  4,  3,  2]]
 
 # Loading images
-background = pygame.image.load('Chess\Images\Chess_Board.png')
+background = pygame.image.load('Games/Chess/Images/Chess_Board.png')
 
-white = [pygame.image.load('Chess\Images\White_Pieces\pawn_white.png'),
-         pygame.image.load('Chess\Images\White_Pieces\Rook_white.png'),
-         pygame.image.load('Chess\Images\White_Pieces\knight_white.png'),
-         pygame.image.load('Chess\Images\White_Pieces\Bishop_white.png'),
-         pygame.image.load('Chess\Images\White_Pieces\king_white.png'),
-         pygame.image.load('Chess\Images\White_Pieces\Queen_white.png')]
+white = [pygame.image.load('Games/Chess/Images/White_Pieces/pawn_white.png'),
+         pygame.image.load('Games/Chess/Images/White_Pieces/Rook_white.png'),
+         pygame.image.load('Games/Chess/Images/White_Pieces/knight_white.png'),
+         pygame.image.load('Games/Chess/Images/White_Pieces/Bishop_white.png'),
+         pygame.image.load('Games/Chess/Images/White_Pieces/king_white.png'),
+         pygame.image.load('Games/Chess/Images/White_Pieces/Queen_white.png')]
 
-black = [pygame.image.load('Chess\Images\Black_Pieces\pawn_black.png'),
-         pygame.image.load('Chess\Images\Black_Pieces\Rook_black.png'),
-         pygame.image.load('Chess\Images\Black_Pieces\knight_black.png'),
-         pygame.image.load('Chess\Images\Black_Pieces\Bishop_black.png'),
-         pygame.image.load('Chess\Images\Black_Pieces\king_black.png'),
-         pygame.image.load('Chess\Images\Black_Pieces\queen_black.png')]
+black = [pygame.image.load('Games/Chess/Images/Black_Pieces/pawn_black.png'),
+         pygame.image.load('Games/Chess/Images/Black_Pieces/Rook_black.png'),
+         pygame.image.load('Games/Chess/Images/Black_Pieces/knight_black.png'),
+         pygame.image.load('Games/Chess/Images/Black_Pieces/Bishop_black.png'),
+         pygame.image.load('Games/Chess/Images/Black_Pieces/king_black.png'),
+         pygame.image.load('Games/Chess/Images/Black_Pieces/queen_black.png')]
 
 
 # Displaying the Chess Board
