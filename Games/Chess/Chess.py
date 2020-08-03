@@ -89,6 +89,7 @@ def isValid(piece, y, x, oldy, oldx):
     knightcheck = Knight()
     kingcheck = King()
     pawncheck = Pawn()
+
     result = []
 
     total = [pawncheck.validList(oldx, oldy), 
@@ -98,29 +99,7 @@ def isValid(piece, y, x, oldy, oldx):
              kingcheck.validList(oldx, oldy),
              rookcheck.validList(oldx, oldy) + bishopcheck.validList(oldx, oldy)]
 
-    
-    if abs(piece) == 1:
-        result = pawncheck.validList(oldx, oldy)
-
-
-    if abs(piece) == 2:
-        result = rookcheck.validList(oldx, oldy)
-
-
-    elif abs(piece) == 3:
-        result = knightcheck.validList(oldx, oldy)
-
-
-    elif abs(piece) == 4:
-        result = bishopcheck.validList(oldx, oldy)
-
-
-    elif abs(piece) == 5:
-        result = kingcheck.validList(oldx, oldy)
-
-
-    elif abs(piece) == 6:
-        result = rookcheck.validList(oldx, oldy) + bishopcheck.validList(oldx, oldy)
+    result = total[piece - 1]
 
 
     if result is None:
