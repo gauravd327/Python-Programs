@@ -21,10 +21,10 @@ YELLOW = (255, 255, 0, 50)
 # The chess board(represented as an array)
 gameboard = [[-2, -3, -4, -6, -5, -4, -3, -2],
              [-1, -1, -1, -1, -1, -1, -1, -1],
-             [ 0,  0,  0,  0,  0,  1,  0,  0],
-             [ 0,  0,  0,  0,  4,  0,  0,  0],
              [ 0,  0,  0,  0,  0,  0,  0,  0],
-             [ 0,  0,  1,  0,  0,  0,  1,  0],
+             [ 0,  0,  0,  0,  0,  0,  0,  0],
+             [ 0,  0,  0,  0,  0,  0,  0,  0],
+             [ 0,  0,  0,  0,  0,  0,  0,  0],
              [ 1,  1,  1,  1,  1,  1,  1,  1],
              [ 2,  3,  4,  6,  5,  4,  3,  2]]
 
@@ -47,17 +47,17 @@ black = [pygame.image.load('Games\Chess\Images\Black_Pieces\pawn_black.png'),
 
 
 # Displaying the Chess Board
-def displayBoard():
+def displayBoard(board):
     win.blit(background, (0, 0))
     hover()
 
-    for i in range(len(gameboard)):
-        for j in range(len(gameboard[i])):
-            if gameboard[i][j] >= 1:
-                win.blit(white[gameboard[i][j] - 1], (j * cell_size, i * cell_size))
+    for i in range(len(board)):
+        for j in range(len(board[i])):
+            if board[i][j] >= 1:
+                win.blit(white[board[i][j] - 1], (j * cell_size, i * cell_size))
 
-            elif gameboard[i][j] <= -1:
-                win.blit(black[abs(gameboard[i][j]) - 1], (j * cell_size, i * cell_size))
+            elif board[i][j] <= -1:
+                win.blit(black[abs(board[i][j]) - 1], (j * cell_size, i * cell_size))
 
 def flipBoard(board):
     size = len(board)
@@ -103,7 +103,6 @@ def isValid(piece, y, x, oldy, oldx):
    
     elif abs(piece) == 4:
         result = bishopcheck.validList(oldx, oldy)
-        print(result)
 
     elif abs(piece) == 5:
         result = kingcheck.validList(oldx, oldy)
@@ -172,43 +171,76 @@ class Rook(Piece):
         for i in range(len(gameboard)):
             for j in range(len(gameboard[i])):
                 valid = True
-                z = 1
-                if i == y:               
-                    while z < abs(x - j):
-                        if j > x:
-                            if gameboard[y][j - z] != 0:
-                                valid = False
-                                break
+                z, new_y, new_x = 1, 0, 0
+                if i == y or j == x:
+                    while z < max(abs(x - j), abs(y - i)):
+                        if i == y:
+                            if j > x:
+                                new_y, new_x = y, j - z
+
+                                
+                            elif j < x:
+                                new_y, new_x = y, (j + abs(x - j)) - z
+
+                        elif j == x:      
+                            if i > y:
+                                new_y, new_x = i - z, x
+
+                                
+                            elif i < y:
+                                new_y, new_x = (i + abs(y - i)) - z, x
+
+                        if gameboard[new_y][new_x] != 0:
+                            valid = False
+                            break
                             
-                        elif j < x:
-                            print(2, [i, j, y, x, abs(x - j)])
-                            if gameboard[y][(j + abs(x - j))- z] != 0:
-                                valid = False
-                                break
                             
                         z += 1
                     if valid:
                         poslist.append([i, j])    
-
-                elif j == x:
-                    while z < abs(y - i):
-                        if i > y:
-                            if gameboard[i - z][x] != 0:
-                                valid = False
-                                break
-                            
-                        elif i < y:
-                            if gameboard[(i + abs(y - i))- z][x] != 0:
-                                valid = False
-                                break
-                            
-                        z += 1
-                    if valid:
-                        poslist.append([i, j])   
-
-                    
-                             
+                          
         return poslist
+
+
+class Bishop(Piece):
+
+    def validList(self, y, x):
+        poslist = []
+        for i in range(len(gameboard)):
+            for j in range(len(gameboard[i])):
+                valid = True
+                z, new_y, new_x = 1, 0, 0
+
+                if abs(i - y) == abs(j - x):                                              
+                    while z < abs(x - j):
+                        if i > y:
+                            if j > x:
+                                new_y, new_x = y + z, x + z
+
+                                
+                            elif j < x:
+                                new_y, new_x = y + z, x - z
+
+                        elif i < y:      
+                                if j > x:
+                                    new_y, new_x = y - z, x + z
+
+                                    
+                                elif j < x:
+                                    new_y, new_x = y - z, x - z
+
+                        if gameboard[new_y][new_x] != 0:
+                            valid = False
+                            break
+     
+                                    
+                        z += 1
+
+                    if valid:
+                        poslist.append([i, j])          
+
+        return poslist
+
 
 class Knight(Piece):
 
@@ -219,37 +251,9 @@ class Knight(Piece):
                 if (abs(i - y) == 1 and abs(j - x) == 2) or (abs(i - y) == 2 and abs(j - x) == 1):
                     poslist.append([i, j])
 
-        return poslist
-
-class Bishop(Piece):
-
-    def validList(self, y, x):
-        poslist = []
-        for i in range(len(gameboard)):
-            for j in range(len(gameboard[i])):
-                valid = True
-                if i > y:  
-                    z = 1              
-                    while z < abs(x - j):
-                        if j > x:
-                            print(4, [i, j, y, x, abs(x - j)])
-                            if gameboard[y - z][j - z] != 0:
-                                valid = False
-                                break
-                            
-                        elif j < x:
-                            print(3, [i, j, y, x, abs(x - j)])
-                            if gameboard[y - z][j + z] != 0:
-                                valid = False
-                                break
-                            
-                        z += 1
-                    if valid:
-                        poslist.append([i, j])    
-
-                 
 
         return poslist
+
 
 class King(Piece):
 
@@ -257,16 +261,15 @@ class King(Piece):
         poslist = []
         for i in range(len(gameboard)):
             for j in range(len(gameboard[i])):
-                if abs(i - y) <= 1 and abs(j - x) <= 1:
-                    
+                if abs(i - y) <= 1 and abs(j - x) <= 1:                
                     poslist.append([i, j])
+
 
         return poslist
 
 
 # Gameloop
 def main():
-    # Gameloop variables
 
     crashed = False
     clock = pygame.time.Clock()
@@ -287,9 +290,10 @@ def main():
                 crashed = True
 
             state = pygame.key.get_pressed()
-            if state[pygame.K_f]:
+            if state[pygame.K_UP]:
                 flipBoard(gameboard)
 
+            
 
             # Drag and drop functionality(If the mousebutton is pressed)
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -308,9 +312,9 @@ def main():
 
                 isValid(curr_piece, curr_x, curr_y, pos1, pos2)
 
-
+                
                 # Swapping positions with the desired location
-                if isValid(curr_piece, curr_y, curr_x, pos1, pos2) and (gameboard[curr_y][curr_x] <= gameboard[pos2][pos1]):
+                if isValid(curr_piece, curr_y, curr_x, pos1, pos2) and min(gameboard[curr_y][curr_x], gameboard[pos2][pos1]) <= 0:
                     if curr_x != pos1 or curr_y != pos2:
                         gameboard[pos2][pos1] = curr_piece
                         gameboard[pos2][pos1], gameboard[curr_y][curr_x] = 0, gameboard[pos2][pos1]
@@ -320,13 +324,11 @@ def main():
 
                 else:
                     gameboard[pos2][pos1] = curr_piece
+            
 
-        displayBoard()
-
+        displayBoard(gameboard)
         common.move(selected, curr_piece, pos1, pos2)
-
         pygame.display.update()
-
         clock.tick(60)
 
 
