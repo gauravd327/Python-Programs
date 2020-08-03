@@ -1,5 +1,6 @@
 import pygame
 pygame.init()
+
 # Initializing game window
 screen_width = 600
 screen_height = 600
@@ -237,9 +238,11 @@ class Knight(Piece):
         poslist = []
         for i in range(len(gameboard)):
             for j in range(len(gameboard[i])):
-                if (abs(i - y) == 1 and abs(j - x) == 2) or (abs(i - y) == 2 and abs(j - x) == 1):
+                if (abs(i - y) == 1 and abs(j - x) == 2):
                     poslist.append([i, j])
 
+                elif (abs(i - y) == 2 and abs(j - x) == 1):
+                    poslist.append([i, j])
 
         return poslist
 
