@@ -30,7 +30,7 @@ gameboard = [[-2, -3, -4, -6, -5, -4, -3, -2],
 
 # Loading images
 background = pygame.image.load('Games\Chess\Images\Chess_Board.png')
-
+ 
 white = [pygame.image.load('Games\Chess\Images\White_Pieces\pawn_white.png'),
          pygame.image.load('Games\Chess\Images\White_Pieces\Rook_white.png'),
          pygame.image.load('Games\Chess\Images\White_Pieces\knight_white.png'),
@@ -44,6 +44,7 @@ black = [pygame.image.load('Games\Chess\Images\Black_Pieces\pawn_black.png'),
          pygame.image.load('Games\Chess\Images\Black_Pieces\Bishop_black.png'),
          pygame.image.load('Games\Chess\Images\Black_Pieces\king_black.png'),
          pygame.image.load('Games\Chess\Images\Black_Pieces\queen_black.png')]
+
 
 
 # Displaying the Chess Board
@@ -90,6 +91,14 @@ def isValid(piece, y, x, oldy, oldx):
     pawncheck = Pawn()
     result = []
 
+    total = [pawncheck.validList(oldx, oldy), 
+             rookcheck.validList(oldx, oldy),
+             knightcheck.validList(oldx, oldy),
+             bishopcheck.validList(oldx, oldy),
+             kingcheck.validList(oldx, oldy),
+             rookcheck.validList(oldx, oldy) + bishopcheck.validList(oldx, oldy)]
+
+    
     if abs(piece) == 1:
         result = pawncheck.validList(oldx, oldy)
 
@@ -97,12 +106,14 @@ def isValid(piece, y, x, oldy, oldx):
     if abs(piece) == 2:
         result = rookcheck.validList(oldx, oldy)
 
+
     elif abs(piece) == 3:
         result = knightcheck.validList(oldx, oldy)
 
-   
+
     elif abs(piece) == 4:
         result = bishopcheck.validList(oldx, oldy)
+
 
     elif abs(piece) == 5:
         result = kingcheck.validList(oldx, oldy)
