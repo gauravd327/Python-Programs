@@ -45,7 +45,7 @@ black = [pygame.image.load('Games\Chess\Images\Black_Pieces\pawn_black.png'),
          pygame.image.load('Games\Chess\Images\Black_Pieces\king_black.png'),
          pygame.image.load('Games\Chess\Images\Black_Pieces\queen_black.png')]
 
-
+check = False
 
 # Displaying the Chess Board
 def displayBoard(board):
@@ -65,6 +65,7 @@ def flipBoard(board):
     for i in range(len(gameboard) // 2):
         for j in range(len(gameboard[i])):
             gameboard[i][j], gameboard[size - i - 1][j] = gameboard[size - i - 1][j], gameboard[i][j]
+
 
 # Creating a "yellow" outline if a cell/square is hovered over
 def hover():
@@ -135,19 +136,20 @@ class Piece:
                 win.blit(black[abs(piece) - 1], black[abs(gameboard[xpos][ypos]) - 1].get_rect(center=pos))
 
         return
-        
+
 class Pawn(Piece):
     
     def validList(self, y, x):
-        if gameboard[y][x] < 0:
-            temp = y + 1
-
-        else:
-            temp = y - 1
-
-        poslist = []
-        start = 1
         try:
+            if gameboard[y][x] < 0:
+                temp = y + 1
+
+            else:
+                temp = y - 1
+
+            poslist = []
+            start = 1
+        
             for i in range(len(gameboard)):
                 for j in range(len(gameboard[i])):
                     if y == 1 or y == 6:
@@ -155,7 +157,7 @@ class Pawn(Piece):
     
                     else:
                         start = 1
-                    if 0 <= abs(i - y) <= start and abs(j - x) <= 0 and gameboard[temp][x] == 0:
+                    if 0 <= abs(i - y) <= start and abs(j - x) <= 0 and gameboard[temp][x] <= 0:
                         poslist.append([i, j])
         
             if gameboard[temp][x - 1] != 0:
@@ -265,17 +267,31 @@ class Knight(Piece):
 
 
 class King(Piece):
+    
 
     def validList(self, y, x):
-        poslist = []
-        for i in range(len(gameboard)):
-            for j in range(len(gameboard[i])):
-                if abs(i - y) <= 1 and abs(j - x) <= 1:                
-                    poslist.append([i, j])
+        try:
+            poslist = []
+            for i in range(len(gameboard)):
+                for j in range(len(gameboard[i])):
+                    if abs(i - y) <= 1 and abs(j - x) <= 1:                
+                        poslist.append([i, j])
+            
+            if x == 4 and abs(gameboard[y][x]) != 1:
+                if (gameboard[y][x + 1] and gameboard[y][x + 2]) == 0:                
+                    gameboard[y][x + 3], gameboard[y][x + 1] = 0, 2 * (gameboard[y][x] // abs(gameboard[y][x]))
+                    poslist.append([y, x + 2])
+                    
+                if (gameboard[y][x - 1] and gameboard[y][x - 2] and gameboard[y][x - 3]) == 0:
+                    gameboard[y][x - 4], gameboard[y][x - 2] = 0, 2 * (gameboard[y][x] // abs(gameboard[y][x]))
 
+                    poslist.append([y, x - 3])
+                    
+            
+            return poslist
 
-        return poslist
-
+        except:
+            pass
 
 # Gameloop
 def main():
@@ -329,11 +345,7 @@ def main():
                         gameboard[pos2][pos1] = curr_piece
                         gameboard[pos2][pos1], gameboard[curr_y][curr_x] = 0, gameboard[pos2][pos1]
 
-                    else:
-                        gameboard[pos2][pos1] = curr_piece
 
-                else:
-                    gameboard[pos2][pos1] = curr_piece
             
 
         displayBoard(gameboard)
