@@ -277,7 +277,7 @@ class King(Piece):
                     if abs(i - y) <= 1 and abs(j - x) <= 1:                
                         poslist.append([i, j])
             
-            if x == 4 and abs(gameboard[y][x]) != 1:
+            if x == 4 and abs(gameboard[y][x]) == 5:
                 if (gameboard[y][x + 1] and gameboard[y][x + 2]) == 0:                
                     gameboard[y][x + 3], gameboard[y][x + 1] = 0, 2 * (gameboard[y][x] // abs(gameboard[y][x]))
                     poslist.append([y, x + 2])
