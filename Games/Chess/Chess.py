@@ -99,7 +99,7 @@ def isValid(piece, y, x, oldy, oldx):
              kingcheck.validList(oldx, oldy),
              rookcheck.validList(oldx, oldy) + bishopcheck.validList(oldx, oldy)]
 
-    result = total[piece - 1]
+    result = total[abs(piece) - 1]
 
 
     if result is None:
@@ -298,7 +298,8 @@ def main():
             # Drag and drop functionality(If the mousebutton is lifted)
             if event.type == pygame.MOUSEBUTTONUP:
                 selected = None
-
+                
+                gameboard[pos2][pos1] = curr_piece
                 curr_x //= cell_size
                 curr_y //= cell_size
 
@@ -306,7 +307,7 @@ def main():
 
                 
                 # Swapping positions with the desired location
-                if isValid(curr_piece, curr_y, curr_x, pos1, pos2) and min(gameboard[curr_y][curr_x], gameboard[pos2][pos1]) <= 0:
+                if isValid(curr_piece, curr_y, curr_x, pos1, pos2) and (gameboard[curr_y][curr_x] * gameboard[pos2][pos1]) <= 0:
                     if curr_x != pos1 or curr_y != pos2:
                         gameboard[pos2][pos1] = curr_piece
                         gameboard[pos2][pos1], gameboard[curr_y][curr_x] = 0, gameboard[pos2][pos1]
@@ -322,7 +323,7 @@ def main():
         common.move(selected, curr_piece, pos1, pos2)
         pygame.display.update()
         clock.tick(60)
-
+        
 
 if __name__ == "__main__":
     main()
