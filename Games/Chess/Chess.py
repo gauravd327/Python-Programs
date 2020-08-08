@@ -100,7 +100,7 @@ def isValid(piece, y, x, oldy, oldx):
              rookcheck.validList(oldx, oldy) + bishopcheck.validList(oldx, oldy)]
 
     result = total[abs(piece) - 1]
-
+    print(result, oldx, oldy)
 
     if result is None:
         return False
@@ -135,22 +135,39 @@ class Piece:
                 win.blit(black[abs(piece) - 1], black[abs(gameboard[xpos][ypos]) - 1].get_rect(center=pos))
 
         return
-
+        
 class Pawn(Piece):
-
+    
     def validList(self, y, x):
+        if gameboard[y][x] < 0:
+            temp = y + 1
+
+        else:
+            temp = y - 1
+
         poslist = []
         start = 1
-        for i in range(len(gameboard)):
-            for j in range(len(gameboard[i])):
-                if y == 1 or y == 6:
-                    start = 2
- 
-                else:
-                    start = 1
-                if 0 <= abs(i - y) <= start and abs(j - x) <= 1:
+        try:
+            for i in range(len(gameboard)):
+                for j in range(len(gameboard[i])):
+                    if y == 1 or y == 6:
+                        start = 2
+    
+                    else:
+                        start = 1
+                    if 0 <= abs(i - y) <= start and abs(j - x) <= 0 and gameboard[temp][x] == 0:
+                        poslist.append([i, j])
+        
+            if gameboard[temp][x - 1] != 0:
+                poslist.append([temp, x - 1])
 
-                    poslist.append([i, j])
+
+            if gameboard[temp][x + 1] != 0:
+                poslist.append([temp, x + 1])
+
+        except:
+            pass
+
 
         return poslist
 
@@ -270,7 +287,7 @@ def main():
     curr_piece = 0
 
     while not crashed:
-        common = Rook()
+        common = Piece()
 
         # Checking if a piece is being hovered over
         curr_x, curr_y = pygame.mouse.get_pos()
