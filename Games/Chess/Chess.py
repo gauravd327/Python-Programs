@@ -1,11 +1,14 @@
 import pygame
+import time
+
 pygame.init()
 
 # Initializing game window
 screen_width = 600
-screen_height = 600
+cell_size = (screen_width) // 8
+screen_height = screen_width 
 
-cell_size = (screen_height + screen_width) // 16
+
 
 win = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption('Chess')
@@ -28,6 +31,8 @@ gameboard = [[-2, -3, -4, -6, -5, -4, -3, -2],
              [ 1,  1,  1,  1,  1,  1,  1,  1],
              [ 2,  3,  4,  6,  5,  4,  3,  2]]
 
+undolist, redolist = [], []
+
 # Loading images
 background = pygame.image.load('Games\Chess\Images\Chess_Board.png')
  
@@ -44,6 +49,11 @@ black = [pygame.image.load('Games\Chess\Images\Black_Pieces\pawn_black.png'),
          pygame.image.load('Games\Chess\Images\Black_Pieces\Bishop_black.png'),
          pygame.image.load('Games\Chess\Images\Black_Pieces\king_black.png'),
          pygame.image.load('Games\Chess\Images\Black_Pieces\queen_black.png')]
+
+background = pygame.transform.scale(background, (screen_width, screen_height))
+for x in range(6):
+    white[x] = pygame.transform.scale(white[x], (cell_size, cell_size))
+    black[x] = pygame.transform.scale(black[x], (cell_size, cell_size))
 
 check = False
 
@@ -69,19 +79,23 @@ def flipBoard(board):
 
 # Creating a "yellow" outline if a cell/square is hovered over
 def hover():
+
     for i in range(len(gameboard)):
         for j in range(len(gameboard[i])):
             curr_x = pygame.mouse.get_pos()[0] // cell_size
             curr_y = pygame.mouse.get_pos()[1] // cell_size
-            pygame.draw.rect(win, YELLOW, (curr_x * cell_size, curr_y * cell_size, cell_size, cell_size), 4)
+            if curr_x <= 7 and curr_y <= 7:
+                pygame.draw.rect(win, YELLOW, (curr_x * cell_size, curr_y * cell_size, cell_size, cell_size), 4)
 
-            # Returning x, y coordinates and the type of piece
-            # if the mouse is hovering over an occupied cell
+                # Returning x, y coordinates and the type of piece
+                # if the mouse is hovering over an occupied cell
 
-            if gameboard[curr_y][curr_x] != 0:
-                return gameboard[curr_y][curr_x], curr_x, curr_y
+                if gameboard[curr_y][curr_x] != 0:
+                    return gameboard[curr_y][curr_x], curr_x, curr_y
 
-            return 0, curr_x, curr_y
+                return 0, curr_x, curr_y
+
+ 
 
 
 def isValid(piece, y, x, oldy, oldx):
@@ -101,7 +115,6 @@ def isValid(piece, y, x, oldy, oldx):
              rookcheck.validList(oldx, oldy) + bishopcheck.validList(oldx, oldy)]
 
     result = total[abs(piece) - 1]
-    print(result, oldx, oldy)
 
     if result is None:
         return False
@@ -292,23 +305,28 @@ class King(Piece):
 
         except:
             pass
+def equalize(list1, list2):
+    for i in range(len(list2)):
+        for j in range(len(list2[i])):
+            list2[i][j] = list1[i][j]
 
+white_king = gameboard.index(5)
+black_king = gameboard.index(-5)
 # Gameloop
 def main():
-
     crashed = False
-    clock = pygame.time.Clock()
+    clock = pygame.time.Clock() 
     selected = None
     pos1, pos2 = 0, 0
     curr_piece = 0
+    global gameboard
 
     while not crashed:
         common = Piece()
 
         # Checking if a piece is being hovered over
         curr_x, curr_y = pygame.mouse.get_pos()
-        piece, x, y = hover()
-
+        piece, x, y = hover()   
         for event in pygame.event.get():
             
             if event.type == pygame.QUIT:
@@ -318,8 +336,36 @@ def main():
             if state[pygame.K_UP]:
                 flipBoard(gameboard)
 
-            
 
+            if state[pygame.K_r]:
+                gameboard = [[-2, -3, -4, -6, -5, -4, -3, -2],
+                             [-1, -1, -1, -1, -1, -1, -1, -1],
+                             [ 0,  0,  0,  0,  0,  0,  0,  0],
+                             [ 0,  0,  0,  0,  0,  0,  0,  0],
+                             [ 0,  0,  0,  0,  0,  0,  0,  0],
+                             [ 0,  0,  0,  0,  0,  0,  0,  0],
+                             [ 1,  1,  1,  1,  1,  1,  1,  1],
+                             [ 2,  3,  4,  6,  5,  4,  3,  2]]
+
+
+            if state[pygame.K_LEFT]:
+                try:
+                    equalize(undolist[-1], gameboard)
+                    print(gameboard)
+                    redolist.append(gameboard)
+                    undolist.pop()
+                except:
+                    pass
+
+
+            if state[pygame.K_RIGHT]:
+                try:
+                    gameboard = redolist[-1]
+                    undolist.append(gameboard)
+                    redolist.pop()
+                except:
+                    pass
+  
             # Drag and drop functionality(If the mousebutton is pressed)
             if event.type == pygame.MOUSEBUTTONDOWN:
                 # Saving the x, y coordinates and the type of piece
@@ -344,7 +390,9 @@ def main():
                     if curr_x != pos1 or curr_y != pos2:
                         gameboard[pos2][pos1] = curr_piece
                         gameboard[pos2][pos1], gameboard[curr_y][curr_x] = 0, gameboard[pos2][pos1]
-
+                        undolist.append(gameboard)
+                        #time.sleep(0.1)
+                        #flipBoard(gameboard)
 
             
 
