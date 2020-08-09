@@ -29,12 +29,12 @@ gameboard = [[-2, -3, -4, -6, -5, -4, -3, -2],
              [ 2,  3,  4,  6,  5,  4,  3,  2]]
 
 # Loading images
-background = pygame.image.load('Games\Chess\Images\Chess_Board.png')
- 
+background = pygame.image.load("Games\Chess\Images\Chess_Board.png")
+
 white = [pygame.image.load('Games\Chess\Images\White_Pieces\pawn_white.png'),
          pygame.image.load('Games\Chess\Images\White_Pieces\Rook_white.png'),
          pygame.image.load('Games\Chess\Images\White_Pieces\knight_white.png'),
-         pygame.image.load('Games\Chess\Images\White_Pieces\Bishop_white.png'),
+         pygame.image.load('Chess\Chess\Images\White_Pieces\Bishop_white.png'),
          pygame.image.load('Games\Chess\Images\White_Pieces\king_white.png'),
          pygame.image.load('Games\Chess\Images\White_Pieces\Queen_white.png')]
 
@@ -93,7 +93,7 @@ def isValid(piece, y, x, oldy, oldx):
 
     result = []
 
-    total = [pawncheck.validList(oldx, oldy), 
+    total = [pawncheck.validList(oldx, oldy),
              rookcheck.validList(oldx, oldy),
              knightcheck.validList(oldx, oldy),
              bishopcheck.validList(oldx, oldy),
@@ -138,7 +138,7 @@ class Piece:
         return
 
 class Pawn(Piece):
-    
+
     def validList(self, y, x):
         try:
             if gameboard[y][x] < 0:
@@ -149,17 +149,17 @@ class Pawn(Piece):
 
             poslist = []
             start = 1
-        
+
             for i in range(len(gameboard)):
                 for j in range(len(gameboard[i])):
                     if y == 1 or y == 6:
                         start = 2
-    
+
                     else:
                         start = 1
                     if 0 <= abs(i - y) <= start and abs(j - x) <= 0 and gameboard[temp][x] <= 0:
                         poslist.append([i, j])
-        
+
             if gameboard[temp][x - 1] != 0:
                 poslist.append([temp, x - 1])
 
@@ -187,27 +187,27 @@ class Rook(Piece):
                             if j > x:
                                 new_y, new_x = y, j - z
 
-                                
+
                             elif j < x:
                                 new_y, new_x = y, (j + abs(x - j)) - z
 
-                        elif j == x:      
+                        elif j == x:
                             if i > y:
                                 new_y, new_x = i - z, x
 
-                                
+
                             elif i < y:
                                 new_y, new_x = (i + abs(y - i)) - z, x
 
                         if gameboard[new_y][new_x] != 0:
                             valid = False
                             break
-                            
-                            
+
+
                         z += 1
                     if valid:
-                        poslist.append([i, j])    
-                          
+                        poslist.append([i, j])
+
         return poslist
 
 
@@ -220,33 +220,33 @@ class Bishop(Piece):
                 valid = True
                 z, new_y, new_x = 1, 0, 0
 
-                if abs(i - y) == abs(j - x):                                              
+                if abs(i - y) == abs(j - x):
                     while z < abs(x - j):
                         if i > y:
                             if j > x:
                                 new_y, new_x = y + z, x + z
 
-                                
+
                             elif j < x:
                                 new_y, new_x = y + z, x - z
 
-                        elif i < y:      
+                        elif i < y:
                                 if j > x:
                                     new_y, new_x = y - z, x + z
 
-                                    
+
                                 elif j < x:
                                     new_y, new_x = y - z, x - z
 
                         if gameboard[new_y][new_x] != 0:
                             valid = False
                             break
-     
-                                    
+
+
                         z += 1
 
                     if valid:
-                        poslist.append([i, j])          
+                        poslist.append([i, j])
 
         return poslist
 
@@ -267,27 +267,27 @@ class Knight(Piece):
 
 
 class King(Piece):
-    
+
 
     def validList(self, y, x):
         try:
             poslist = []
             for i in range(len(gameboard)):
                 for j in range(len(gameboard[i])):
-                    if abs(i - y) <= 1 and abs(j - x) <= 1:                
+                    if abs(i - y) <= 1 and abs(j - x) <= 1:
                         poslist.append([i, j])
-            
+
             if x == 4 and abs(gameboard[y][x]) == 5:
-                if (gameboard[y][x + 1] and gameboard[y][x + 2]) == 0:                
+                if (gameboard[y][x + 1] and gameboard[y][x + 2]) == 0:
                     gameboard[y][x + 3], gameboard[y][x + 1] = 0, 2 * (gameboard[y][x] // abs(gameboard[y][x]))
                     poslist.append([y, x + 2])
-                    
+
                 if (gameboard[y][x - 1] and gameboard[y][x - 2] and gameboard[y][x - 3]) == 0:
                     gameboard[y][x - 4], gameboard[y][x - 2] = 0, 2 * (gameboard[y][x] // abs(gameboard[y][x]))
 
                     poslist.append([y, x - 3])
-                    
-            
+
+
             return poslist
 
         except:
@@ -310,7 +310,7 @@ def main():
         piece, x, y = hover()
 
         for event in pygame.event.get():
-            
+
             if event.type == pygame.QUIT:
                 crashed = True
 
@@ -318,7 +318,7 @@ def main():
             if state[pygame.K_UP]:
                 flipBoard(gameboard)
 
-            
+
 
             # Drag and drop functionality(If the mousebutton is pressed)
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -331,14 +331,14 @@ def main():
             # Drag and drop functionality(If the mousebutton is lifted)
             if event.type == pygame.MOUSEBUTTONUP:
                 selected = None
-                
+
                 gameboard[pos2][pos1] = curr_piece
                 curr_x //= cell_size
                 curr_y //= cell_size
 
                 isValid(curr_piece, curr_x, curr_y, pos1, pos2)
 
-                
+
                 # Swapping positions with the desired location
                 if isValid(curr_piece, curr_y, curr_x, pos1, pos2) and (gameboard[curr_y][curr_x] * gameboard[pos2][pos1]) <= 0:
                     if curr_x != pos1 or curr_y != pos2:
@@ -346,13 +346,13 @@ def main():
                         gameboard[pos2][pos1], gameboard[curr_y][curr_x] = 0, gameboard[pos2][pos1]
 
 
-            
+
 
         displayBoard(gameboard)
         common.move(selected, curr_piece, pos1, pos2)
         pygame.display.update()
         clock.tick(60)
-        
+
 
 if __name__ == "__main__":
     main()
