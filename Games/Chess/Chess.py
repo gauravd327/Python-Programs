@@ -310,16 +310,20 @@ def equalize(list1, list2):
         for j in range(len(list2[i])):
             list2[i][j] = list1[i][j]
 
-white_king = gameboard.index(5)
-black_king = gameboard.index(-5)
+#white_king = gameboard.index(5)
+#black_king = gameboard.index(-5)
 # Gameloop
+
+counter = 1
+flip = False
+
 def main():
     crashed = False
     clock = pygame.time.Clock() 
     selected = None
     pos1, pos2 = 0, 0
     curr_piece = 0
-    global gameboard
+    global gameboard, counter, flip
 
     while not crashed:
         common = Piece()
@@ -336,6 +340,12 @@ def main():
             if state[pygame.K_UP]:
                 flipBoard(gameboard)
 
+            if state[pygame.K_f]:
+                if flip:
+                    flip = False
+
+                else:
+                    flip = True
 
             if state[pygame.K_r]:
                 gameboard = [[-2, -3, -4, -6, -5, -4, -3, -2],
@@ -386,13 +396,17 @@ def main():
 
                 
                 # Swapping positions with the desired location
-                if isValid(curr_piece, curr_y, curr_x, pos1, pos2) and (gameboard[curr_y][curr_x] * gameboard[pos2][pos1]) <= 0:
+                if isValid(curr_piece, curr_y, curr_x, pos1, pos2) and (gameboard[curr_y][curr_x] * gameboard[pos2][pos1]) <= 0 and (curr_piece // counter) >= 0:
                     if curr_x != pos1 or curr_y != pos2:
                         gameboard[pos2][pos1] = curr_piece
                         gameboard[pos2][pos1], gameboard[curr_y][curr_x] = 0, gameboard[pos2][pos1]
                         undolist.append(gameboard)
-                        #time.sleep(0.1)
-                        #flipBoard(gameboard)
+
+                        if flip:
+                            time.sleep(0.1)
+                            flipBoard(gameboard)
+
+                        counter *= -1
 
             
 
