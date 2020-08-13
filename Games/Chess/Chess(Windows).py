@@ -396,7 +396,7 @@ def main():
 
 
                 # Swapping positions with the desired location
-                if isValid(curr_piece, curr_y, curr_x, pos1, pos2) and (gameboard[curr_y][curr_x] * gameboard[pos2][pos1]) <= 0:
+                if isValid(curr_piece, curr_y, curr_x, pos1, pos2) and (gameboard[curr_y][curr_x] * gameboard[pos2][pos1]) <= 0 and (curr_piece * counter >= 0):
                     if curr_x != pos1 or curr_y != pos2:
                         gameboard[pos2][pos1] = curr_piece
                         gameboard[pos2][pos1], gameboard[curr_y][curr_x] = 0, gameboard[pos2][pos1]
