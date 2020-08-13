@@ -56,6 +56,8 @@ for x in range(6):
     black[x] = pygame.transform.scale(black[x], (cell_size, cell_size))
 
 check = False
+white_king = [0, 0]
+black_king = [0, 0]
 
 # Displaying the Chess Board
 def displayBoard(board):
@@ -64,11 +66,19 @@ def displayBoard(board):
 
     for i in range(len(board)):
         for j in range(len(board[i])):
+            if board[i][j] == 5:
+                white_king = [i, j]
+
+            if board[i][j] == -5:
+                black_king = [i, j]
+
+
             if board[i][j] >= 1:
                 win.blit(white[board[i][j] - 1], (j * cell_size, i * cell_size))
 
             elif board[i][j] <= -1:
                 win.blit(black[abs(board[i][j]) - 1], (j * cell_size, i * cell_size))
+
 
 def flipBoard(board):
     size = len(board)
@@ -149,6 +159,9 @@ class Piece:
                 win.blit(black[abs(piece) - 1], black[abs(gameboard[xpos][ypos]) - 1].get_rect(center=pos))
 
         return
+
+
+        
 
 class Pawn(Piece):
 
@@ -310,8 +323,7 @@ def equalize(list1, list2):
         for j in range(len(list2[i])):
             list2[i][j] = list1[i][j]
 
-#white_king = gameboard.index(5)
-#black_king = gameboard.index(-5)
+
 # Gameloop
 
 counter = 1
@@ -407,7 +419,7 @@ def main():
                             flipBoard(gameboard)
 
                         counter *= -1
-
+                        print(white_king, black_king)
 
 
         displayBoard(gameboard)
