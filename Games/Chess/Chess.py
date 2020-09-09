@@ -1,12 +1,19 @@
 import pygame
 import sys
+import os
 from pygame import mixer
 from Pieces import Pawn, Rook, Knight, Bishop, King
 
 pygame.init()
 mixer.init()
 
-mixer.music.load("Games\Chess\Chess_Move.wav")
+
+loc = os.path.abspath("Games\Chess\Chess.py")
+bound = loc.index("Games")
+loc = loc[0:bound]
+
+
+mixer.music.load(loc + "Games\Chess\Chess_Move.wav")
 mixer.music.set_volume(0.7)
 
 # Initializing game window
@@ -36,21 +43,21 @@ gameboard = [[-2, -3, -4, -6, -5, -4, -3, -2],
              [ 2,  3,  4,  6,  5,  4,  3,  2]]
 
 # Loading images
-background = pygame.image.load("Games\Chess\Images\Chess_Board.png")
+background = pygame.image.load(loc + "Games\Chess\Images\Chess_Board.png")
 
-white = [pygame.image.load('Games\Chess\Images\White_Pieces\pawn_white.png'),
-         pygame.image.load('Games\Chess\Images\White_Pieces\Rook_white.png'),
-         pygame.image.load('Games\Chess\Images\White_Pieces\knight_white.png'),
-         pygame.image.load('Games\Chess\Images\White_Pieces\Bishop_white.png'),
-         pygame.image.load('Games\Chess\Images\White_Pieces\king_white.png'),
-         pygame.image.load('Games\Chess\Images\White_Pieces\Queen_white.png')]
+white = [pygame.image.load(loc + 'Games\Chess\Images\White_Pieces\pawn_white.png'),
+         pygame.image.load(loc + 'Games\Chess\Images\White_Pieces\Rook_white.png'),
+         pygame.image.load(loc + 'Games\Chess\Images\White_Pieces\knight_white.png'),
+         pygame.image.load(loc + 'Games\Chess\Images\White_Pieces\Bishop_white.png'),
+         pygame.image.load(loc + 'Games\Chess\Images\White_Pieces\king_white.png'),
+         pygame.image.load(loc + 'Games\Chess\Images\White_Pieces\Queen_white.png')]
 
-black = [pygame.image.load('Games\Chess\Images\Black_Pieces\pawn_black.png'),
-         pygame.image.load('Games\Chess\Images\Black_Pieces\Rook_black.png'),
-         pygame.image.load('Games\Chess\Images\Black_Pieces\knight_black.png'),
-         pygame.image.load('Games\Chess\Images\Black_Pieces\Bishop_black.png'),
-         pygame.image.load('Games\Chess\Images\Black_Pieces\king_black.png'),
-         pygame.image.load('Games\Chess\Images\Black_Pieces\queen_black.png')]
+black = [pygame.image.load(loc + 'Games\Chess\Images\Black_Pieces\pawn_black.png'),
+         pygame.image.load(loc + 'Games\Chess\Images\Black_Pieces\Rook_black.png'),
+         pygame.image.load(loc + 'Games\Chess\Images\Black_Pieces\knight_black.png'),
+         pygame.image.load(loc + 'Games\Chess\Images\Black_Pieces\Bishop_black.png'),
+         pygame.image.load(loc + 'Games\Chess\Images\Black_Pieces\king_black.png'),
+         pygame.image.load(loc + 'Games\Chess\Images\Black_Pieces\queen_black.png')]
 
 background = pygame.transform.scale(background, (screen_width, screen_height))
 
