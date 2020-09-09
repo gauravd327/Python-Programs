@@ -25,7 +25,6 @@ score = 0
 snakeList = []
 
 while running:
-
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
