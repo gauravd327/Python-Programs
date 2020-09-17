@@ -40,9 +40,15 @@ class Pawn:
             
 
         except:
-            pass
+            try:
+                if board[temp][x] == 0:
+                    poslist.append([temp, x])
+
+            except:
+                pass
 
         return poslist
+
 
 
 class Rook:
