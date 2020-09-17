@@ -13,37 +13,39 @@ class Pawn:
 
             if piece < 0:
                 temp = y + start
+                if start == 2:
+                    if board[temp - 1][x] == 0:
+                        poslist.append([temp - 1, x])
+
                 if board[y + 1][x - 1] != 0:
                     poslist.append([y + 1, x - 1])
 
                 if board[y + 1][x + 1] != 0:
                     poslist.append([y + 1, x + 1])
 
-                if start == 2:
-                    if board[temp - 1][x] == 0:
-                        poslist.append([temp - 1, x])
+                
             else:
                 temp = y - start
+                if start == 2:
+                    if board[temp + 1][x] == 0:
+                        poslist.append([temp + 1, x])
+
                 if board[y - 1][x - 1] != 0:
                     poslist.append([y - 1, x - 1])
 
                 if board[y - 1][x + 1] != 0:
                     poslist.append([y - 1, x + 1])
 
-                if start == 2:
-                    if board[temp + 1][x] == 0:
-                        poslist.append([temp + 1, x])
-            
+                        
             if board[temp][x] == 0:
                 poslist.append([temp, x])
-
-            
+           
 
         except:
             try:
                 if board[temp][x] == 0:
                     poslist.append([temp, x])
-
+                   
             except:
                 pass
 
